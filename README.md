@@ -2,10 +2,21 @@ This is a minimal WebKit based browser.
 It's intended use is to display a single web resource non-interactively,
 while being highly portable, especially to the arm11 architecture (used for the Raspberry Pi), and supporting Javascript and HTML5 Websockets for dynamic content updates.
 
+# PREQUISITES
+
+On top of a standard Raspian Jessie Lite image
+
+	```
+	apt-get update
+	apt-get install xorg
+	```
+
 # COMPILING
+    ```
     apt-get install libwebkit-dev
     # OR: yum install webkitgtk-devel
     make
+    ```
 
 # INSTALLING
 No special steps are required for installation. Just execute `browser`.
