@@ -38,8 +38,7 @@ int main(int argc, char** argv) {
     webkit_web_view_load_uri(web_view, default_url);
   }
 
-  gtk_window_maximize(GTK_WINDOW(window));
-  gtk_window_fullscreen(GTK_WINDOW(window));
+  gtk_window_set_default_size (window, 1920, 1080);
   gtk_window_set_decorated(GTK_WINDOW(window), FALSE);
   gtk_widget_show_all(window);
   gtk_main();
