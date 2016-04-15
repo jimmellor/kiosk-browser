@@ -2,6 +2,7 @@
 #include <signal.h>
 
 #include <gtk/gtk.h>
+#include <gtk/WebKitJavascriptResult.h>
 #include <gdk/gdkkeysyms.h>
 #include <webkit/webkit.h>
 
@@ -43,7 +44,7 @@ int main(int argc, char** argv) {
   gtk_widget_show_all(window);
   gtk_main();
 
-  web_view_get_link_url(web_view, "login");
+  web_view_get_link_url(web_view, "login");   
 
   return 0;
 }
