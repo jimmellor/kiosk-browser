@@ -43,7 +43,52 @@ int main(int argc, char** argv) {
   gtk_widget_show_all(window);
   gtk_main();
 
+  web_view_get_link_url(web_view, "login");
+
   return 0;
+}
+
+static voidweb_view_javascript_finished (GObject      *object, GAsyncResult *result, gpointer      user_data)
+{
+    WebKitJavascriptResult *js_result;
+    JSValueRef              value;
+    JSGlobalContextRef      context;
+    GError                 *error = NULL;
+
+    js_result = webkit_web_view_run_javascript_finish (WEBKIT_WEB_VIEW (object), result, &error);
+    if (!js_result) {
+        g_warning ("Error running javascript: %s", error->message);
+        g_error_free (error);
+        return;
+    }
+
+    context = webkit_javascript_result_get_global_context (js_result);
+    value = webkit_javascript_result_get_value (js_result);
+    if (JSValueIsString (context, value)) {
+        JSStringRef js_str_value;
+        gchar      *str_value;
+        gsize       str_length;
+
+        js_str_value = JSValueToStringCopy (context, value, NULL);
+        str_length = JSStringGetMaximumUTF8CStringSize (js_str_value);
+        str_value = (gchar *)g_malloc (str_length);
+        JSStringGetUTF8CString (js_str_value, str_value, str_length);
+        JSStringRelease (js_str_value);
+        g_print ("Script result: %s\n", str_value);
+        g_free (str_value);
+    } else {
+        g_warning ("Error running javascript: unexpected return value");
+    }
+    webkit_javascript_result_unref (js_result);
+}
+
+static void web_view_get_link_url (WebKitWebView *web_view, const gchar   *link_id)
+{
+    gchar *script;
+
+    script = g_strdup_printf ("window.document.getElementById('%s').action;", link_id);
+    webkit_web_view_run_javascript (web_view, script, NULL, web_view_javascript_finished, NULL);
+    g_free (script);
 }
 
 gboolean on_key_press(GtkWidget* window, GdkEventKey* key, gpointer userdata) {
