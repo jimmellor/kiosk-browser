@@ -2,7 +2,7 @@
 #include <signal.h>
 
 #include <gtk/gtk.h>
-#include <gtk/WebKitJavascriptResult.h>
+#include <webkit/webkitdom.h>
 #include <gdk/gdkkeysyms.h>
 #include <webkit/webkit.h>
 
@@ -15,7 +15,6 @@ void unmaximize();
 
 static WebKitWebView* web_view;
 static GtkWidget *window;
-gchar* default_url = "https://rpm.newrelic.com/accounts/353627/applications/7562687";
 
 int main(int argc, char** argv) {
   gtk_init(&argc, &argv);
